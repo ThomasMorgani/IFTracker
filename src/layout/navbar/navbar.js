@@ -3,6 +3,7 @@ import { useState } from 'react'
 import {
   EuiAvatar,
   EuiBadge,
+  EuiButtonIcon,
   EuiButtonEmpty,
   EuiFlexGroup,
   EuiFlexItem,
@@ -12,7 +13,6 @@ import {
   EuiFlyoutHeader,
   EuiHeader,
   EuiHeaderAlert,
-  EuiHeaderLogo,
   EuiHeaderSection,
   EuiHeaderSectionItem,
   EuiHeaderSectionItemButton,
@@ -23,21 +23,28 @@ import {
   EuiPopoverTitle,
   EuiPortal,
   EuiSpacer,
-  EuiSwitch,
   EuiText,
   EuiTitle,
 } from '@elastic/eui'
 import { htmlIdGenerator } from '@elastic/eui/lib/services'
+import Sidenav from '../sidedrawer'
 
 export default () => {
-  const [position, setPosition] = useState('static')
-
+  const [position, setPosition] = useState('fixed')
+  const [navIsOpen, setNavIsOpen] = useState(false)
+  const toggleNav = () => {
+    setNavIsOpen(!navIsOpen)
+  }
   return (
     <>
       <EuiHeader position='fixed'>
         <EuiHeaderSection grow={false}>
           <EuiHeaderSectionItem border='right'>
-            <EuiHeaderLogo>Elastic</EuiHeaderLogo>
+            <EuiIcon type='monitoringApp' color='danger'></EuiIcon>
+
+            <EuiTitle size='s'>
+              <h6>IFTRACKER</h6>
+            </EuiTitle>
           </EuiHeaderSectionItem>
         </EuiHeaderSection>
 
@@ -47,9 +54,18 @@ export default () => {
           </EuiHeaderSectionItem>
           <EuiHeaderSectionItem>
             <HeaderUserMenu />
+            <EuiButtonIcon
+              color='primary'
+              onClick={() => {
+                setNavIsOpen(!navIsOpen)
+              }}
+              iconType='apps'
+              aria-label='menu'
+            />
           </EuiHeaderSectionItem>
         </EuiHeaderSection>
       </EuiHeader>
+      <Sidenav navIsOpen={navIsOpen} handleToggle={toggleNav} />
     </>
   )
 }
@@ -94,28 +110,6 @@ const HeaderUpdates = ({ flyoutOrPopover = 'flyout' }) => {
       ),
       date: '26 March 2019',
       badge: <EuiBadge color='hollow'>6.7</EuiBadge>,
-    },
-    {
-      title: '6.7 release notes',
-      text: 'Stay up-to-date on the latest and greatest features.',
-      action: (
-        <EuiLink target='_blank' external href='https://www.elastic.co/guide/en/kibana/6.7/release-notes-6.7.0.html'>
-          Check out the docs
-        </EuiLink>
-      ),
-      date: '26 March 2019',
-      badge: <EuiBadge color='hollow'>6.7</EuiBadge>,
-    },
-    {
-      title: 'Rollups made simple in Kibana',
-      text: 'Save space and preserve the integrity of your data directly in the UI.',
-      action: (
-        <EuiLink target='_blank' external href='https://www.elastic.co/blog/how-to-create-manage-and-visualize-elasticsearch-rollup-data-in-kibana'>
-          Read the blog
-        </EuiLink>
-      ),
-      date: '10 January 2019',
-      badge: <EuiBadge color='hollow'>6.5</EuiBadge>,
     },
   ]
 
